@@ -1,6 +1,6 @@
-from . import views
 from django.urls import path
+from .views import HomePage
 
 urlpatterns = [
-    path('', views.HomePage.as_view(), name='home'),
+    path('', HomePage.as_view(), name='home'),  # Maps the home page to the HomePage view
 ]

@@ -19,5 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('watchlist.urls')),  # Adjust 'watchlist' to your app's name
+    path('', include('watchlist.urls')), 
 ]
