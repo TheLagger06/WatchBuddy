@@ -1,13 +1,311 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django-Setup</title>
+    <title>WatchBuddy</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
-    <h1>Hello Django From Heroku</h1>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="{% url 'home' %}">
+        <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        WatchBuddy
+    </a>
+
+        <!-- Toggler for Mobile View -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav ml-auto text-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movies_list' %}">Movies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'series_list' %}">Series</a>
+                </li>
+
+
+                {% if user.is_authenticated %}
+                <!-- If the user is logged in, show the logout link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <!-- If the user is not logged in, show the login modal trigger -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+<!-- Login Modal (updated for form submission) -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark text-white login-modal-content" style="border-radius: 1rem; box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); min-height: 450px;">
+            <div class="modal-header border-0 justify-content-center">
+                <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="form-outline mb-4">
+                        <input type="text" name="username" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your username" required />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" name="password" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your password" required />
+                    </div>
+                    <div class="form-check d-flex justify-content-start mb-4">
+                        <input class="form-check-input bg-secondary" type="checkbox" name="remember" id="form1Example3" />
+                        <label class="form-check-label ml-2" for="form1Example3"> Remember password </label>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="border-radius: 0.5rem;">Login</button>
+                </form>
+                <div class="mt-3 text-center">
+                    <p>Don't have an account? <a href="#" id="openRegisterModal" class="text-info">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal (updated for registration form submission) -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark text-white register-modal-content" style="border-radius: 1rem; box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); min-height: 450px;">
+            <div class="modal-header border-0 justify-content-center">
+                <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="form-outline mb-4">
+                        <input type="text" name="username" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your username" required />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="email" name="email" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your email" required />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" name="password1" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your password" required />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" name="password2" class="form-control form-control-lg bg-secondary text-white" placeholder="Confirm your password" required />
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="border-radius: 0.5rem;">Register</button>
+                </form>
+                <div class="mt-3 text-center">
+                    <p>Already have an account? <a href="#" id="openLoginModal" class="text-info">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS to Change Placeholder Colors -->
+<style>
+   /* Specific style for input placeholders in the login and register modals */
+#loginModal input::placeholder,
+#registerModal input::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Light white for the placeholder */
+    opacity: 1; /* Ensure the color is not transparent */
+}
+
+/* Optional: Ensure the form-control has no default styling that overrides the placeholder */
+#loginModal input,
+#registerModal input {
+    color: white; /* Ensures text inside input fields is white */
+    background-color: #343a40; /* Dark background for input fields */
+    border: none; /* Remove border */
+    outline: none; /* Remove outline */
+}
+
+/* Style the form-control when focused */
+#loginModal input:focus,
+#registerModal input:focus {
+    box-shadow: none; /* Remove default focus shadow */
+    background-color: #3d434b; /* Slightly lighter dark background on focus */
+}
+</style>
+
+<!-- JavaScript for Modal Transition -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // When "Register" is clicked, hide login modal and show register modal with rotation effect
+        document.getElementById('openRegisterModal').addEventListener('click', function () {
+            $('#loginModal').modal('hide');
+            setTimeout(function () {
+                rotateModals('registerModal');
+            }, 500);
+        });
+
+        // When "Login here" is clicked, hide register modal and show login modal with rotation effect
+        document.getElementById('openLoginModal').addEventListener('click', function () {
+            $('#registerModal').modal('hide');
+            setTimeout(function () {
+                rotateModals('loginModal');
+            }, 500);
+        });
+
+        // Function to apply rotation effect during modal transition
+        function rotateModals(modalId) {
+            $(`#${modalId}`).modal('show').find('.modal-content').css({
+                transform: 'rotateY(90deg)',
+                transition: 'transform 0.5s'
+            }).delay(10).queue(function () {
+                $(this).css('transform', 'rotateY(0deg)').dequeue();
+            });
+        }
+    });
+</script>
+
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Hero Section -->
+        <header class="hero-section">
+            <div class="container-fluid p-0">
+                <div class="row mr-0 align-items-center justify-content-center">
+                    <div class="col-lg-6 text-center text-lg-start " style="margin-bottom: 0;">
+                        <!-- Set margin-bottom to 0 -->
+                        <h1 class="display-5 fw-bolder text-white mb-2">Welcome to WatchBuddy</h1>
+                        <p class="lead fw-normal text-white-50 mb-2">Your go-to place for discovering and tracking the
+                            latest movies and series. Explore trending titles, track your favorites, and join a
+                            community of fellow entertainment lovers. Start your journey now and never miss out on the
+                            best in entertainment!</p>
+
+                    </div>
+                    <div class="col-lg-4"> <!-- Adjust column size for carousel -->
+                        <div id="trendingCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
+                            <div class="carousel-inner">
+                                {% for item in latest_items %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <img src="https://image.tmdb.org/t/p/original{{ item.backdrop_path }}"
+                                        class="d-block w-100 hero-image" alt="{{ item.title }}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5 class="text-white">{{ item.title }}</h5>
+                                        <h5 class="text-white">{{ item.name }}</h5>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+<!-- Trending Section -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-center text-white mb-4">Trending Movies & Series</h2>
+        <div class="carousel-container position-relative mx-auto" 
+             style="border: 2px solid #444; border-radius: 15px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); padding: 10px;">
+            <div class="d-flex overflow-auto" style="scrollbar-width: thin;">
+                {% for item in trending_items %}
+                <a href="{% if item.media_type == 'movie' %}{% url 'movies_detail' item.id %}{% elif item.media_type == 'tv' %}{% url 'series_detail' item.id %}{% endif %}">
+                    <div class="card mx-2" style="min-width: 200px; max-width: 200px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                        <img class="card-img-top" src="https://image.tmdb.org/t/p/original{{ item.poster_path }}"
+                            alt="{{ item.title }}" style="border-radius: 10px; object-fit: cover; height: 300px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-white" style="font-size: 16px;">
+                                {{ item.name }} {{ item.title }}
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <p class="text-white text-center">No trending items available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Movies Section -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-center text-white mb-4">Recently Released Movies</h2>
+        <div class="carousel-container position-relative mx-auto"
+             style="border: 2px solid #444; border-radius: 15px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); padding: 10px;">
+            <div class="d-flex overflow-auto" style="scrollbar-width: thin;">
+                {% for item in recent_movies %}
+                <div class="card mx-2" style="min-width: 200px; max-width: 200px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                    <a href="{% url 'movies_detail' movie_id=item.id %}">
+                        <img class="card-img-top"
+                             src="https://image.tmdb.org/t/p/original{{ item.poster_path }}"
+                             alt="{{ item.title }}"
+                             style="border-radius: 10px; object-fit: cover; height: 300px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-white" style="font-size: 16px;">{{ item.title }}</h5>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-white text-center">No recent movies available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Series Section -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-center text-white mb-4">Recently Released Series</h2>
+        <div class="carousel-container position-relative mx-auto"
+             style="border: 2px solid #444; border-radius: 15px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); padding: 10px;">
+            <div class="d-flex overflow-auto" style="scrollbar-width: thin;">
+                {% for item in recent_series %}
+                <a href="{% url 'series_detail' item.id %}" class="text-decoration-none">
+                    <div class="card mx-2" style="min-width: 200px; max-width: 200px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                        <img class="card-img-top" src="https://image.tmdb.org/t/p/original{{ item.poster_path }}"
+                             alt="{{ item.name }}" style="border-radius: 10px; object-fit: cover; height: 300px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-white" style="font-size: 16px;">{{ item.name }}</h5>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <p class="text-white text-center">No recent series available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <p>&copy; 2024 WatchBuddy. All Rights Reserved.</p>
+        </footer>
+
 </body>
+
 </html>

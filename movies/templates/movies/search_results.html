@@ -1,0 +1,17 @@
+<h1>Search Results</h1>
+<form method="GET">
+    <input type="text" name="q" placeholder="Search for movies...">
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    {% for result in results %}
+    <li>
+        <strong>{{ result.title }}</strong> (Release Date: {{ result.release_date }})
+        <br>
+        <img src="https://image.tmdb.org/t/p/w200{{ result.poster_path }}" alt="{{ result.title }}">
+        <br>
+        <p>{{ result.overview }}</p>
+    </li>
+    {% endfor %}
+</ul>

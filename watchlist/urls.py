@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import HomePage
+from . import views
 
 urlpatterns = [
-    path('', HomePage.as_view(), name='home'),  # Maps the home page to the HomePage view
+  path('', views.index, name='home'),  # URL pattern for the home page
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]

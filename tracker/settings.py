@@ -16,7 +16,8 @@ import os
 import dj_database_url
 if os.path.isfile("env.py"):import env
 
-
+TMDB_API_KEY = os.environ.get('TMDB_API_KEY')
+BASE_URL = 'https://api.themoviedb.org/3'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -48,6 +49,11 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'watchlist',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+     'movies',
+    'series',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +66,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'tracker.urls'
@@ -67,7 +74,7 @@ ROOT_URLCONF = 'tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,3 +146,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Configure Django Heroku settings
 import django_heroku
 django_heroku.settings(locals())
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default authentication backend
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth backend
+)
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = False
+
+

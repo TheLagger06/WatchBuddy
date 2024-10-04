@@ -1,0 +1,522 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WatchBuddy</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+<!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="{% url 'home' %}"> <!-- Link to the home URL pattern -->
+        <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        WatchBuddy
+    </a>
+
+        <!-- Toggler for Mobile View -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav ml-auto text-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'movies_list' %}">Movies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'series_list' %}">Series</a>
+                </li>
+
+                <!-- Notifications Icon -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-bell"></i>
+                    </a>
+                </li>
+
+              <!-- Login Icon -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </li>
+
+
+                <!-- Search Icon with Dropdown Input -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="navbarDropdownSearch" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right p-3" aria-labelledby="navbarDropdownSearch">
+                        <form class="form-inline">
+                            <input class="form-control mr-sm-2 w-100" type="search" placeholder="Search"
+                                aria-label="Search">
+                            <button class="btn btn-secondary btn-sm" type="submit">Go</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark text-white login-modal-content" style="border-radius: 1rem; box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); min-height: 450px;">
+            <div class="modal-header border-0 justify-content-center">
+                <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-outline mb-4">
+                        <input type="email" id="typeEmailX-2" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your email" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="typePasswordX-2" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your password" />
+                    </div>
+                    <div class="form-check d-flex justify-content-start mb-4">
+                        <input class="form-check-input bg-secondary" type="checkbox" value="" id="form1Example3" />
+                        <label class="form-check-label ml-2" for="form1Example3"> Remember password </label>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="border-radius: 0.5rem;">Login</button>
+                </form>
+                <!-- Link to Register -->
+                <div class="mt-3 text-center">
+                    <p>Don't have an account? <a href="#" id="openRegisterModal" class="text-info">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark text-white register-modal-content" style="border-radius: 1rem; box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); min-height: 450px;">
+            <div class="modal-header border-0 justify-content-center">
+                <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-outline mb-4">
+                        <input type="email" id="registerEmail" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your email" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="registerPassword" class="form-control form-control-lg bg-secondary text-white" placeholder="Enter your password" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="confirmPassword" class="form-control form-control-lg bg-secondary text-white" placeholder="Confirm your password" />
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="border-radius: 0.5rem;">Register</button>
+                </form>
+                <!-- Link to go back to Login -->
+                <div class="mt-3 text-center">
+                    <p>Already have an account? <a href="#" id="openLoginModal" class="text-info">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark text-white login-modal-content" style="border-radius: 1rem; box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); min-height: 450px;">
+            <div class="modal-header border-0 justify-content-center">
+                <h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-outline mb-4">
+                        <input type="email" id="typeEmailX-2" class="form-control form-control-lg bg-secondary text-white placeholder-color" placeholder="Enter your email" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="typePasswordX-2" class="form-control form-control-lg bg- text-white placeholder-color" placeholder="Enter your password" />
+                    </div>
+                    <div class="form-check d-flex justify-content-start mb-4">
+                        <input class="form-check-input bg-secondary" type="checkbox" value="" id="form1Example3" />
+                        <label class="form-check-label ml-2" for="form1Example3"> Remember password </label>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="border-radius: 0.5rem;">Login</button>
+                </form>
+                <!-- Link to Register -->
+                <div class="mt-3 text-center">
+                    <p>Don't have an account? <a href="#" id="openRegisterModal" class="text-info">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark text-white register-modal-content" style="border-radius: 1rem; box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); min-height: 450px;">
+            <div class="modal-header border-0 justify-content-center">
+                <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-outline mb-4">
+                        <input type="email" id="registerEmail" class="form-control form-control-lg bg-secondary text-white placeholder-color" placeholder="Enter your email" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="registerPassword" class="form-control form-control-lg bg-secondary text-white placeholder-color" placeholder="Enter your password" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="confirmPassword" class="form-control form-control-lg bg-secondary text-white placeholder-color" placeholder="Confirm your password" />
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="border-radius: 0.5rem;">Register</button>
+                </form>
+                <!-- Link to go back to Login -->
+                <div class="mt-3 text-center">
+                    <p>Already have an account? <a href="#" id="openLoginModal" class="text-info">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS to Change Placeholder Colors -->
+<style>
+   /* Specific style for input placeholders in the login and register modals */
+#loginModal input::placeholder,
+#registerModal input::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Light white for the placeholder */
+    opacity: 1; /* Ensure the color is not transparent */
+}
+
+/* Optional: Ensure the form-control has no default styling that overrides the placeholder */
+#loginModal input,
+#registerModal input {
+    color: white; /* Ensures text inside input fields is white */
+    background-color: #343a40; /* Dark background for input fields */
+    border: none; /* Remove border */
+    outline: none; /* Remove outline */
+}
+
+/* Style the form-control when focused */
+#loginModal input:focus,
+#registerModal input:focus {
+    box-shadow: none; /* Remove default focus shadow */
+    background-color: #3d434b; /* Slightly lighter dark background on focus */
+}
+</style>
+
+<!-- JavaScript for Modal Transition -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // When "Register" is clicked, hide login modal and show register modal with rotation effect
+        document.getElementById('openRegisterModal').addEventListener('click', function () {
+            $('#loginModal').modal('hide');
+            setTimeout(function () {
+                rotateModals('registerModal');
+            }, 500);
+        });
+
+        // When "Login here" is clicked, hide register modal and show login modal with rotation effect
+        document.getElementById('openLoginModal').addEventListener('click', function () {
+            $('#registerModal').modal('hide');
+            setTimeout(function () {
+                rotateModals('loginModal');
+            }, 500);
+        });
+
+        // Function to apply rotation effect during modal transition
+        function rotateModals(modalId) {
+            $(`#${modalId}`).modal('show').find('.modal-content').css({
+                transform: 'rotateY(90deg)',
+                transition: 'transform 0.5s'
+            }).delay(10).queue(function () {
+                $(this).css('transform', 'rotateY(0deg)').dequeue();
+            });
+        }
+    });
+</script>
+
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+
+<!-- Hero Section -->
+<header class="hero-section"
+    style="background-image: url('https://image.tmdb.org/t/p/original{{ series_details.backdrop_path }}'); background-size: cover; background-position: center;">
+    <div class="container"
+        style="max-width: 80%; margin: auto; border-radius: 15px; overflow: hidden; padding: 15px;">
+        <div class="row align-items-center"
+            style="height: 550px; background: rgba(0, 0, 0, 0.7); border-radius: 15px; padding: 20px;">
+            <div class="col-md-4 d-flex justify-content-center">
+                <!-- Movie Poster Card -->
+                <div class="card"
+                    style="width: 280px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 10px;">
+                    <img src="https://image.tmdb.org/t/p/w500{{ series_details.poster_path }}"
+                        alt="{{ series_details.title }} Poster" class="card-img-top"
+                        style="border-radius: 10px; height: auto; max-width: 100%;">
+                </div>
+            </div>
+            <div class="col-md-8 text-white">
+                <h1 style="font-size: 1.3em;"><b>{{ series_details.name }}</b></h1>
+                <h5 style="font-size: 1em;"> {{ episode_run_times.runtime }}m |  {{ rating }} |  {{ series_details.first_air_date }} </h5>
+                
+
+                <!-- Icons for Favorites, Watchlist, and IMDb Rating -->
+                <div class="d-flex justify-content-start my-3">
+                    <a href="#" class="icon-link" title="Add to Favorites">
+                        <i class="fas fa-heart"></i> Favorites
+                    </a>
+                    <a href="#" class="icon-link ms-4" title="Add to Watchlist">
+                        <i class="fas fa-bookmark"></i> Watchlist
+                    </a>
+                    <!-- IMDb Rating -->
+                    <div class="imdb-rating mx-3 text-white">
+                        <i class="fas fa-star text-warning"></i>
+                        <span style="font-size: 1.2em;">{{ series_details.vote_average|floatformat:1 }}/10</span>
+                        <span style="font-size: 0.9em;">IMDb</span>
+                    </div>
+                </div>
+                
+                <h5 style="font-size: 1em;">
+                    {% if directors %}
+                   <b> Director:</b> 
+                    {% for director in directors %}
+                    {{ director.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% endif %}
+
+                </h5>
+            
+
+                <!-- Processing Genres -->
+                <h5 style="font-size: 1em;"><b>Genres:</b>
+                    {% if series_details.genres %}
+                    {% for genre in series_details.genres %}
+                    {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </h5>
+
+                <!-- Movie Overview -->
+                <h5 style="font-size: 1em;"><b>Overview:</b> {{ series_details.overview }}</h5>
+
+                <!-- Trailer Iframe -->
+                <div class="mt-3">
+                    <h5>Trailer:</h5>
+                    {% if trailer_key %}
+                    <iframe width="85%" height="250" src="https://www.youtube.com/embed/{{ trailer_key }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                    {% else %}
+                    <p>No trailer available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Seasons Section -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-center text-white mb-4">Seasons</h2>
+        <div class="carousel-container position-relative mx-auto"
+             style="border: 2px solid #444; border-radius: 15px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); padding: 10px;">
+            <div class="d-flex overflow-auto" style="scrollbar-width: thin;">
+                {% for season in seasons %}
+                <!-- Wrap the entire card in an anchor tag to make it clickable -->
+                <a href="?season_number={{ season.season_number }}" class="text-decoration-none">
+                    <div class="card mx-2 season-card" style="min-width: 150px; max-width: 150px; position: relative; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                        <!-- Season Poster -->
+                        {% if season.poster_path %}
+                        <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{ season.poster_path }}" alt="{{ season.name }}" style="border-radius: 10px; object-fit: cover; height: 200px;">
+                        {% else %}
+                        <img class="card-img-top" src="https://via.placeholder.com/150x200?text=No+Image" alt="{{ season.name }}" style="border-radius: 10px; object-fit: cover; height: 200px;">
+                        {% endif %}
+
+                        <!-- Circular Progress Bar (inside the card) -->
+                        <div class="progress-circle" id="progress_{{ season.season_number }}" data-total-episodes="{{ season.episode_count }}" style="position: absolute; bottom: 10px; left: 10px; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 3px solid #ddd; background: transparent;">
+                            <span class="progress-value" id="progress_value_{{ season.season_number }}" style="position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">0%</span>
+                        </div>
+
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-white" style="font-size: 14px;">{{ season.name }}</h5>
+                            <p class="card-text text-secondary" style="font-size: 12px;">Air Date: {{ season.air_date }}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Episodes Section -->
+<section class="section">
+    <div class="container mt-5">
+        <h2 class="text-center text-white mb-4">Episodes for Season {{ selected_season_number }}</h2>
+
+        <div class="carousel-container position-relative mx-auto"
+             style="border: 2px solid #444; border-radius: 15px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); padding: 10px;">
+            <div class="d-flex overflow-auto" style="scrollbar-width: thin;">
+                {% if episodes %}
+                {% for episode in episodes %}
+                <div class="card mx-2" style="min-width: 200px; max-width: 200px; position: relative; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                    <!-- Font Awesome Icon Positioned at the Top of the Card -->
+                    <div class="icon-check" style="position: absolute; top: 10px; left: 10px; z-index: 2;">
+                        <!-- Unchecked Icon -->
+                        <i class="fa-regular fa-circle-check inactive" id="icon_{{ episode.id }}" data-episode-id="{{ episode.id }}" style="font-size: 24px; color: #ffffff; cursor: pointer;"></i>
+                        <!-- Checked Icon (Hidden by Default) -->
+                        <i class="fa-solid fa-circle-check active" id="icon_active_{{ episode.id }}" data-episode-id="{{ episode.id }}" style="font-size: 24px; color: #00ff00; display: none; cursor: pointer;"></i>
+                    </div>
+                    
+                    <!-- Episode Image -->
+                    {% if episode.still_path %}
+                    <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{ episode.still_path }}" alt="{{ episode.name }}" style="border-radius: 10px; object-fit: cover; height: 150px;">
+                    {% else %}
+                    <img class="card-img-top" src="https://via.placeholder.com/500x281?text=No+Image" alt="{{ episode.name }}" style="border-radius: 10px; object-fit: cover; height: 150px;">
+                    {% endif %}
+
+                    <!-- Episode Details -->
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-white" style="font-size: 14px;">{{ episode.name }}</h5>
+                        <p class="card-text text-secondary" style="font-size: 12px;">Air Date: {{ episode.air_date }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-white text-center">No episodes available for this season.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+ document.addEventListener('DOMContentLoaded', function () {
+    // Select all the inactive icons
+    const inactiveIcons = document.querySelectorAll('.fa-circle-check');
+
+    inactiveIcons.forEach(icon => {
+        icon.addEventListener('click', function () {
+            const episodeId = this.getAttribute('data-episode-id');
+            const inactiveIcon = document.getElementById(`icon_${episodeId}`);
+            const activeIcon = document.getElementById(`icon_active_${episodeId}`);
+
+            // Toggle visibility between active and inactive icons
+            if (inactiveIcon.style.display === 'none') {
+                // Deselect: Show inactive, hide active
+                inactiveIcon.style.display = 'block';
+                activeIcon.style.display = 'none';
+            } else {
+                // Select: Hide inactive, show active
+                inactiveIcon.style.display = 'none';
+                activeIcon.style.display = 'block';
+            }
+        });
+    });
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+ <!-- Cast Section -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-center text-white mb-4">Cast</h2>
+        <div class="carousel-container position-relative mx-auto"
+             style="border: 2px solid #444; border-radius: 15px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); padding: 10px;">
+            <div class="d-flex overflow-auto" style="scrollbar-width: thin;">
+                {% for member in cast %}
+                <div class="card mx-2" style="min-width: 150px; max-width: 150px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);">
+                    <!-- Profile Image -->
+                    {% if member.profile_path %}
+                    <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{ member.profile_path }}" alt="{{ member.name }}" style="border-radius: 10px; object-fit: cover; height: 200px;">
+                    {% else %}
+                    <!-- Fallback Image if no profile_path -->
+                    <img class="card-img-top" src="https://via.placeholder.com/150x200?text=No+Image" alt="{{ member.name }}" style="border-radius: 10px; object-fit: cover; height: 200px;">
+                    {% endif %}
+
+                    <!-- Cast Details -->
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-white" style="font-size: 14px;">{{ member.name }}</h5>
+                        <p class="card-text text-secondary" style="font-size: 12px;">as {{ member.character }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-white text-center">No cast members available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="section">
+    <div class="container" style="border: 2px solid #444; border-radius: 15px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.7); padding: 20px;">
+        <h2 class="text-center text-white mb-4">User Reviews</h2>
+        <div class="review" style="border-bottom: 1px solid #555; padding-bottom: 15px; margin-bottom: 15px;">
+            <h5 class="text-white">Great Series!</h5>
+            <p class="text-white">I really enjoyed the plot and character development.</p>
+        </div>
+        <!-- Add more review sections as needed -->
+        <div class="review" style="border-bottom: 1px solid #555; padding-bottom: 15px; margin-bottom: 15px;">
+            <h5 class="text-white">Loved It!</h5>
+            <p class="text-white">The storyline kept me hooked till the end.</p>
+        </div>
+        <div class="review">
+            <h5 class="text-white">Amazing Visuals!</h5>
+            <p class="text-white">The cinematography was outstanding!</p>
+        </div>
+    </div>
+</section>
+
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <p>&copy; 2024 WatchBuddy. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+</body>
+</html>

@@ -19,5 +19,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('watchlist.urls')), 
+    path('accounts/', include('allauth.urls')),  # Allauth authentication URLs
+    path('', include('watchlist.urls')),  # Include your app's URLs
+    path('', include('movies.urls')),
+    path('', include('series.urls')),
+
 ]

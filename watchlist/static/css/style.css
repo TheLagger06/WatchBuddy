@@ -1,3 +1,188 @@
-h1 {
-  color: red;
+/* Full height for html and body */
+html,
+body {
+  height: auto; /* Let the body grow as needed */
+  margin: 0;
+  padding: 0;
+  overflow-y: auto; /* Ensure vertical scrolling is allowed */
+}
+
+.main-content {
+  padding: 0;
+  margin-top: 56px; /* Avoid overlap with the fixed navbar */
+  overflow-y: auto; /* Allow scrolling if needed */
+}
+.navbar {
+  margin-bottom: 0; /* Ensures there's no extra space below the navbar */
+}
+
+.hero-image {
+  width: 100%; /* Ensure the image takes the full width */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 400px; /* Restrict max height */
+  object-fit: contain; /* Fit image within the box */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Shadow effect */
+}
+
+.carousel-inner img {
+  width: 100%; /* Ensure the image takes the full width */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 400px; /* Restrict max height */
+  max-width: 900px; /* Restrict max width */
+  object-fit: initial; /* Change to contain to fit within the box */
+}
+
+/* Flexbox container to make footer stick to the bottom */
+.d-flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.section {
+  background-color: #1e1e1e; /* Dark background for sections */
+  padding: 20px; /* Keep padding for individual sections */
+  border-radius: 5px; /* Rounded corners for sections */
+  color: white; /* Text color */
+}
+
+/* Hero section specific styles */
+.hero-section {
+  background-color: #343a40; /* Dark background for hero */
+  padding: 5rem 0; /* Vertical padding */
+}
+
+.carousel-caption {
+  bottom: 5px;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Optional: Background for better readability */
+  padding: 5px;
+  border-radius: 5px;
+}
+
+/* Trending Carousel Container */
+
+.container {
+  max-width: 90%;
+}
+
+.carousel-container {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.carousel-container {
+  scrollbar-width: thin; /* Set the scrollbar width to be thin */
+  scrollbar-color: #555 transparent; /* Scrollbar thumb and track colors */
+}
+
+/* Dark theme for the cards */
+.card {
+  background-color: #1e1e1e; /* Dark background for the card */
+  border: none;
+  border-radius: 10px;
+}
+
+.card-title {
+  color: #fff;
+}
+
+/* Adjusted Hero Section Styles */
+.hero-section {
+  background-size: cover;
+  background-position: center;
+  padding: 3rem 0; /* Reduced padding to make it smaller */
+  height: auto; /* Height will adapt based on content */
+}
+
+/* Adjust card size */
+.card {
+  width: 280px; /* Smaller card for poster */
+  border-radius: 10px;
+}
+
+card img {
+  border-radius: 10px;
+}
+
+/* Adjust iframe trailer */
+iframe {
+  border-radius: 10px; /* Add some rounding to iframe */
+}
+
+/* Icon Link Styling */
+.icon-link {
+  color: #ffffff;
+  font-size: 1.2em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.icon-link i {
+  margin-right: 8px;
+  transition: color 0.3s;
+}
+
+.icon-link:hover i {
+  color: #ff4d4d; /* Change color on hover */
+}
+
+.icon-link.ms-4 {
+  margin-left: 24px; /* Spacing between icons */
+}
+
+.review {
+  background-color: #2a2a2a; /* Dark background for reviews */
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.review h5 {
+  color: #ffd700; /* Gold color for review titles */
+}
+
+.review p {
+  color: #ffffff; /* White color for review text */
+}
+
+.footer {
+  background-color: #121212;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+a {
+  cursor: pointer;
+}
+
+/* Card container */
+.card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer; /* Ensure card is clickable */
+}
+
+/* Circular Progress Bar (inside the card, positioned top-right) */
+.progress-circle {
+  position: absolute;
+  top: 150px; /* Adjust position as necessary */
+  right: 10px; /* Adjust position as necessary */
+  width: 40px; /* Size of the circle */
+  height: 40px; /* Size of the circle */
+  border-radius: 50%; /* Make it circular */
+  border: 3px solid transparent; /* Border for the circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white; /* Text color */
+  font-weight: bold; /* Text weight */
 }

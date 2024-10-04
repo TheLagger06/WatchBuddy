@@ -7,11 +7,10 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 class CustomUser(AbstractUser):
-    """Custom User Model."""
-    email = models.EmailField(unique=True)  # Ensures email is unique
+    email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    profile_picture = models.URLField(blank=True, null=True)
+    profile_picture = models.URLField(blank=True, null=True)  # Assuming a URL for profile pictures
 
     USERNAME_FIELD = 'email'  # Use email as the unique identifier for authentication
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']  # Fields required on registration
